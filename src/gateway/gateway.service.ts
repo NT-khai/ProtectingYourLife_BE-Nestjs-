@@ -5,7 +5,9 @@ export class GatewayService {
   private readonly javaBaseUrl: string;
 
   constructor() {
-    this.javaBaseUrl = process.env.JAVA_SERVICE_URL || 'http://localhost:3002';
+    this.javaBaseUrl =
+      process.env.JAVA_SERVICE_URL ||
+      'https://protectingyourlife-be-spring-boot.onrender.com';
   }
 
   private async request<T>(
