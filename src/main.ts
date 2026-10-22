@@ -28,6 +28,7 @@ async function bootstrap() {
       'https://protectingyourlife-be-nestjs.onrender.com',
       'https://protectingyourlife-be-spring-boot.onrender.com',
       'https://protecting-your-life-fe.vercel.app',
+      'https://protectingyourlife-fe.onrender.com',
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
