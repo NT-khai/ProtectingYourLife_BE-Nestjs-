@@ -1,0 +1,17 @@
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "hovaten": "Nguyen Van A",
+    "email": "test@gmail.com",
+    "matkhau": "123456"
+}
+
+####################
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@gmail.com",
+    "matkhau": "123456"
+}

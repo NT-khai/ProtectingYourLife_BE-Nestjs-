@@ -3,8 +3,7 @@ import { PrismaService } from './prisma/prisma.service.js';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly prisma: PrismaService) {}
-  async getHello(): Promise<string> {
+  getHello() {
     return 'Hello World!';
   }
 }
