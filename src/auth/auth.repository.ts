@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { RegisterDto } from './DTO/authRegister.dto.js';
 
@@ -14,13 +14,40 @@ export class AuthRepository {
     });
   }
 
+  async findUserById(id: number) {
+    return await this.prisma.users.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        user_profiles: true,
+      },
+    });
+  }
+
   async addUser(newUser: RegisterDto) {
-    return await this.prisma.users.create({
+    const createdUser = await this.prisma.users.create({
       data: {
         hovaten: newUser.hovaten,
         email: newUser.email,
         matkhau: newUser.matkhau,
+        role: 'user',
+        provider: 'credentials',
       },
     });
+
+    // Also initialize user_profiles row
+    try {
+      await this.prisma.user_profiles.create({
+        data: {
+          user_id: createdUser.id,
+          hovaten: createdUser.hovaten,
+        },
+      });
+    } catch {
+      // Ignore if exists
+    }
+
+    return createdUser;
   }
 }

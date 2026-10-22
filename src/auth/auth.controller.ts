@@ -1,7 +1,7 @@
-import { Controller, Post, Req, Res, UseGuards, Body } from '@nestjs/common';
+import { Controller, Post, Get, Req, Res, UseGuards, Body } from '@nestjs/common';
 import { AuthService } from './auth.service.js';
-
 import { LocalAuthGuard } from './guard/local-auth.guard.js';
+import { JwtAuthGuard } from './guard/jwt-auth.guard.js';
 import type { Request, Response } from 'express';
 import { JwtPayloadDto } from './DTO/jwt-payload.dto.js';
 import { RegisterDto } from './DTO/authRegister.dto.js';
@@ -33,15 +33,35 @@ export class AuthControler {
     return {
       success: true,
       message: 'Đăng nhập thành công',
+      token,
+      user: req.user,
     };
   }
 
   @Post('register')
   async register(@Body() taikhoan: RegisterDto) {
-    const newUser = await this.authService.register(taikhoan);
+    await this.authService.register(taikhoan);
 
     return {
-      message: 'Đăng kí thành công',
+      success: true,
+      message: 'Đăng ký thành công',
+    };
+  }
+
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  async getMe(@Req() req: RequestWithUser) {
+    const user = await this.authService.getUserById(req.user.id);
+    return {
+      success: true,
+      user: {
+        id: user.id,
+        hovaten: user.hovaten,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar,
+        ngaytao: user.ngaytao,
+      },
     };
   }
 

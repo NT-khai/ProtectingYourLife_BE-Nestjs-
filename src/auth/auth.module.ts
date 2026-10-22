@@ -11,9 +11,9 @@ import { JwtStrategy } from './strategy/jwtStrategy.strategy.js';
 @Module({
   imports: [
     JwtModule.register({
-      secret: process.env.COOKIE_ACCESS,
+      secret: process.env.COOKIE_ACCESS || 'T@oiLatAnKhai123#$%^',
       signOptions: {
-        expiresIn: '1h',
+        expiresIn: '7d',
       },
     }),
     PassportModule,
@@ -21,6 +21,6 @@ import { JwtStrategy } from './strategy/jwtStrategy.strategy.js';
   ],
   controllers: [AuthControler],
   providers: [AuthService, AuthRepository, LocalStrategy, JwtStrategy],
-  exports: [AuthService, LocalStrategy, JwtStrategy],
+  exports: [AuthService, LocalStrategy, JwtStrategy, JwtModule],
 })
 export class AuthModule {}

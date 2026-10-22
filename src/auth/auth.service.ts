@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthRepository } from './auth.repository.js';
@@ -17,8 +18,13 @@ export class AuthService {
   ) {}
 
   async login(taikhoan: JwtPayloadDto): Promise<string> {
-    const payload: string = this.jwtService.sign(taikhoan);
-    return payload;
+    const payload = {
+      id: taikhoan.id,
+      email: taikhoan.email,
+      role: taikhoan.role,
+      ngaytao: taikhoan.ngaytao,
+    };
+    return this.jwtService.sign(payload);
   }
 
   async register(taikhoan: RegisterDto): Promise<string> {
@@ -32,14 +38,21 @@ export class AuthService {
 
     const hashMatKhau = await bcrypt.hash(taikhoan.matkhau, 10);
 
-    const newUser = await this.authRepository.addUser({
+    await this.authRepository.addUser({
       ...taikhoan,
       matkhau: hashMatKhau,
     });
 
-    console.log(newUser);
-
     return 'Đăng ký thành công';
+  }
+
+  async getUserById(id: number) {
+    const user = await this.authRepository.findUserById(id);
+    if (!user) {
+      throw new NotFoundException('Không tìm thấy người dùng');
+    }
+    const { matkhau: _, ...result } = user;
+    return result;
   }
 
   async validateUser(email: string, matkhau: string) {

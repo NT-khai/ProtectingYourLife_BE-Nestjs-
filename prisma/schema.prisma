@@ -44,14 +44,14 @@ model user_profiles {
 }
 
 model users {
-  id               Int                @id @default(autoincrement())
+  id               BigInt             @id @default(autoincrement())
   hovaten          String             @db.VarChar(100)
   email            String             @unique @db.VarChar(255)
   matkhau          String?            @db.VarChar(255)
   google_id        String?            @unique @db.VarChar(255)
   avatar           String?
-  provider         String?            @default("credentials") @db.VarChar(20)
-  role             String?            @default("user") @db.VarChar(20)
+  provider         String?            @default("credentials") @db.VarChar(255)
+  role             String?            @default("user") @db.VarChar(255)
   email_verified   Boolean?           @default(false)
   ngaytao          DateTime?          @default(now()) @db.Timestamp(6)
   incident_reports incident_reports[]
