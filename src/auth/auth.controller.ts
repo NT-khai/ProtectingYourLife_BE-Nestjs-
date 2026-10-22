@@ -44,4 +44,17 @@ export class AuthControler {
       message: 'Đăng kí thành công',
     };
   }
+
+  @Post('logout')
+  logout(
+    @Res({ passthrough: true })
+    res: Response,
+  ) {
+    res.clearCookie('access_token');
+
+    return {
+      success: true,
+      message: 'Đăng xuất thành công',
+    };
+  }
 }
