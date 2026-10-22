@@ -9,7 +9,7 @@ datasource db {
 }
 
 model feedback {
-  id         Int       @id @default(autoincrement())
+  id         BigInt    @id @default(autoincrement())
   hovaten    String    @db.VarChar(100)
   email      String    @db.VarChar(255)
   content    String
@@ -18,8 +18,8 @@ model feedback {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model incident_reports {
-  id             Int       @id @default(autoincrement())
-  user_id        Int
+  id             BigInt    @id @default(autoincrement())
+  user_id        BigInt
   loai_su_co     String    @db.VarChar(100)
   muc_do         String    @db.VarChar(20)
   tieu_de        String    @db.VarChar(255)
@@ -34,8 +34,8 @@ model incident_reports {
 }
 
 model user_profiles {
-  id            Int     @id @default(autoincrement())
-  user_id       Int     @unique
+  id            BigInt  @id @default(autoincrement())
+  user_id       BigInt  @unique
   hovaten       String  @db.VarChar(100)
   so_dien_thoai String? @db.VarChar(20)
   dia_chi       String?
@@ -44,7 +44,7 @@ model user_profiles {
 }
 
 model users {
-  id               Int                @id @default(autoincrement())
+  id               BigInt             @id @default(autoincrement())
   hovaten          String             @db.VarChar(100)
   email            String             @unique @db.VarChar(255)
   matkhau          String?            @db.VarChar(255)
