@@ -27,20 +27,28 @@ export class UserGatewayController {
   async getAllUsers() {
     return this.gatewayService.getAllUsers();
   }
-
+  private extractToken(req: RequestWithUser): string | undefined {
+    const bearer = req.headers.authorization?.replace(/^Bearer\s+/i, '');
+    return (req.cookies?.access_token as string | undefined) ?? bearer;
+  }
   @Get('profile/me')
   @UseGuards(JwtAuthGuard)
   async getMyProfile(@Req() req: RequestWithUser) {
-    return this.gatewayService.getUserProfile(req.user.id);
+    console.log('Extracted Token:', this.extractToken(req)); // Debugging line
+    return this.gatewayService.getUserProfile(
+      req.user.id,
+      this.extractToken(req),
+    );
   }
 
   @Put('profile/me')
   @UseGuards(JwtAuthGuard)
-  async updateMyProfile(
-    @Req() req: RequestWithUser,
-    @Body() body: any,
-  ) {
-    return this.gatewayService.updateUserProfile(req.user.id, body);
+  async updateMyProfile(@Req() req: RequestWithUser, @Body() body: any) {
+    return this.gatewayService.updateUserProfile(
+      req.user.id,
+      body,
+      this.extractToken(req),
+    );
   }
 
   @Get(':id')

@@ -1,4 +1,12 @@
-import { Controller, Post, Get, Req, Res, UseGuards, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Req,
+  Res,
+  UseGuards,
+  Body,
+} from '@nestjs/common';
 import { AuthService } from './auth.service.js';
 import { LocalAuthGuard } from './guard/local-auth.guard.js';
 import { JwtAuthGuard } from './guard/jwt-auth.guard.js';
@@ -25,9 +33,9 @@ export class AuthControler {
 
     res.cookie('access_token', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-      maxAge: 24 * 60 * 60 * 1000, // 1 ngày
+      secure: true,
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     return {

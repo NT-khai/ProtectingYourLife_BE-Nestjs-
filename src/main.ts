@@ -25,9 +25,8 @@ async function bootstrap() {
   // CORS configuration
   app.enableCors({
     origin: [
-      'https://protectingyourlife-be-nestjs.onrender.com',
+      'http://localhost:3000',
       'https://protectingyourlife-be-spring-boot.onrender.com',
-      'https://protecting-your-life-fe.vercel.app',
       'https://protectingyourlife-fe.onrender.com',
     ],
     credentials: true,

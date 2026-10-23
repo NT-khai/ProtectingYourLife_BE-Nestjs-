@@ -13,6 +13,7 @@ export class GatewayService {
   private async request<T>(
     endpoint: string,
     options: RequestInit = {},
+    token?: string,
   ): Promise<T> {
     const url = `${this.javaBaseUrl}${endpoint}`;
     try {
@@ -20,6 +21,7 @@ export class GatewayService {
         ...options,
         headers: {
           'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
           ...(options.headers || {}),
         },
       });
@@ -135,14 +137,15 @@ export class GatewayService {
     });
   }
 
-  async getUserProfile(userId: number) {
-    return this.request(`/users/profile/${userId}`);
+  async getUserProfile(userId: number, token?: string) {
+    return this.request(`/users/profile/${userId}`, {}, token);
   }
 
-  async updateUserProfile(userId: number, data: any) {
-    return this.request(`/users/profile/${userId}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
+  async updateUserProfile(userId: number, data: any, token?: string) {
+    return this.request(
+      `/users/profile/${userId}`,
+      { method: 'PUT', body: JSON.stringify(data) },
+      token,
+    );
   }
 }
